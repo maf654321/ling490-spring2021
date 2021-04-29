@@ -75,5 +75,9 @@ if (!file.exists("cldf-practice-tupian-old.csv")) {
 }
 
 # Write results
+<<<<<<< HEAD
 write_csv(cldf_practice_tupian, "cldf-practice-tupian.csv")
+=======
+write_csv(cldf_practice_tupian, "cldf_practice_tupian.csv")
+>>>>>>> origin/main
 ```
