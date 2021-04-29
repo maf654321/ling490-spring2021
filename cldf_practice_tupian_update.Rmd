@@ -2,7 +2,7 @@
 title: "cldf_practice_tupian_update"
 author: "Manuel Fernandez"
 date: "4/29/2021"
-output: html_document
+output: rmarkdown::github_document
 ---
 
 ```{r setup, include=FALSE}
