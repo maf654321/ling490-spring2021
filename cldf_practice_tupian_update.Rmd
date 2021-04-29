@@ -1,0 +1,79 @@
+---
+title: "cldf_practice_tupian_update"
+author: "Manuel Fernandez"
+date: "4/29/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## In-class Assignment 04/28/21
+
+Read data and add columns.
+
+1.  Macro_Region/South America
+2.  Family/Tupian
+3.  Country/Brazil \| Paraguay
+
+```{r}
+# Clear R memory
+rm(list = ls(all = T))
+
+# Load tidyverse
+suppressPackageStartupMessages(
+        sapply(c("tidyverse", "readr",
+                 "maps", "mapdata", "maptools"),
+               require, character.only = T))
+
+# read data
+cldf_practice_tupian <- read_csv("cldf-practice-tupian.csv")
+# Languages.csv from https://zenodo.org/record/4061165
+languages <- read_csv("glottolog-cldf/cldf/languages.csv")
+
+# preview both
+head(cldf_practice_tupian)
+head(languages)
+
+# Select WALS languoid location data
+languages <- select(languages, "Glottocode", "Latitude", "Longitude")
+
+# Merge languoid location data into practice tibble
+cldf_practice_tupian <- merge(cldf_practice_tupian, languages,
+                              by = "Glottocode",
+                              all.x = T, sort = T, no.dups = F) %>%
+        tibble() %>% arrange(ID)
+
+# Add Macro_Region, Family
+cldf_practice_tupian <- cldf_practice_tupian %>%
+        mutate(Macro_Region = "South America",
+               Family = "Tupian")
+head(cldf_practice_tupian)
+
+# Add Country with map.where
+cldf_practice_tupian$Country <- NA
+for (i in 1:nrow(cldf_practice_tupian)) {
+        if (!is.na(cldf_practice_tupian$Latitude[i])) {
+                cldf_practice_tupian$Country[i] <- map.where("world",
+                        x = cldf_practice_tupian$Longitude[i],
+                        y = cldf_practice_tupian$Latitude[i])
+        }
+}; rm(i)
+cldf_practice_tupian[is.na(cldf_practice_tupian$Country),]
+
+# Manually add Zoró country data
+cldf_practice_tupian[cldf_practice_tupian$Glottocode == "zoro1244",]$Country <-
+        "Brazil"
+
+# See results
+cldf_practice_tupian
+
+# Copy original data if not already done so
+if (!file.exists("cldf-practice-tupian-old.csv")) {
+        file.copy("cldf-practice-tupian.csv", "cldf-practice-tupian-old.csv")
+}
+
+# Write results
+write_csv(cldf_practice_tupian, "cldf-practice-tupian.csv")
+```
