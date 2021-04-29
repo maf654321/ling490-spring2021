@@ -28,7 +28,11 @@ suppressPackageStartupMessages(
                require, character.only = T))
 
 # read data
-cldf_practice_tupian <- read_csv("cldf-practice-tupian.csv")
+if (file.exists("cldf-practice-tupian-old.csv")) {
+        cldf_practice_tupian <- read_csv("cldf-practice-tupian-old.csv")
+} else {
+        cldf_practice_tupian <- read_csv("cldf-practice-tupian.csv")
+}
 # Languages.csv from https://zenodo.org/record/4061165
 languages <- read_csv("glottolog-cldf/cldf/languages.csv")
 

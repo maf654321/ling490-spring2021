@@ -190,7 +190,11 @@ suppressPackageStartupMessages(
 <pre><code>## tidyverse     readr      maps   mapdata  maptools 
 ##      TRUE      TRUE      TRUE      TRUE      TRUE</code></pre>
 <pre class="r"><code># read data
-cldf_practice_tupian &lt;- read_csv(&quot;cldf-practice-tupian.csv&quot;)</code></pre>
+if (file.exists(&quot;cldf-practice-tupian-old.csv&quot;)) {
+        cldf_practice_tupian &lt;- read_csv(&quot;cldf-practice-tupian-old.csv&quot;)
+} else {
+        cldf_practice_tupian &lt;- read_csv(&quot;cldf-practice-tupian.csv&quot;)
+}</code></pre>
 <pre><code>## 
 ## ── Column specification ────────────────────────────────────────────────────────
 ## cols(
@@ -316,11 +320,7 @@ if (!file.exists(&quot;cldf-practice-tupian-old.csv&quot;)) {
 }
 
 # Write results
-<<<<<<< HEAD
 write_csv(cldf_practice_tupian, &quot;cldf-practice-tupian.csv&quot;)</code></pre>
-=======
-write_csv(cldf_practice_tupian, &quot;cldf_practice_tupian.csv&quot;)</code></pre>
->>>>>>> origin/main
 </div>
 
 
